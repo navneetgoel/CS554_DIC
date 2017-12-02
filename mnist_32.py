@@ -73,19 +73,20 @@ cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pr
 x_train, y_train = TRAIN_SIZE(5500)
 x_test, y_test = TEST_SIZE(10000)
 LEARNING_RATE = 0.01
-TRAIN_STEPS = 2500
+TRAIN_STEPS = 10000
 
 # optimizing the values of weights and baises to reduce cost.
 training = tf.train.AdamOptimizer(LEARNING_RATE).minimize(cross_entropy)
+correct_prediction = tf.equal(tf.argmax(prediction,1), tf.argmax(y,1))
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 # initializing the global variables
 sess = tf.InteractiveSession()
 tf.global_variables_initializer().run()
 
-correct_prediction = tf.equal(tf.argmax(prediction,1), tf.argmax(y,1))
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, 'float'))
 
-for i in range(10000):
+
+for i in range(TRAIN_STEPS):
   batch_xs, batch_ys = mnist.train.next_batch(100)
   sess.run(training, feed_dict={x: batch_xs, y: batch_ys})
   if i%1000 == 0:
