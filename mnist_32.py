@@ -35,7 +35,7 @@ def TEST_SIZE(size):
 
 #Placeholder defined to hold the pixel values of the 28*28 pixel images and output label values#
 x = tf.placeholder(tf.float32, [None, 784])
-y_ = tf.placeholder(tf.float32, [None, 10])
+y = tf.placeholder(tf.float32, [None, 10])
 
 
 #
@@ -60,13 +60,19 @@ y2 = tf.nn.sigmoid(tf.matmul(y1, W2) + b2)
 #
 W3 = tf.Variable(tf.random_normal([10,10]))
 b3 = tf.Variable(tf.random_normal([10,]))
-y = tf.nn.softmax(tf.matmul(y2, W3) + b3)
+prediction = tf.nn.softmax(tf.matmul(y2, W3) + b3)
+
+# Calculating cross entropy to find the accuracy of the model
+cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y))
+
+# Variable are defined to initialize the model
+x_train, y_train = TRAIN_SIZE(5500)
+x_test, y_test = TEST_SIZE(10000)
+LEARNING_RATE = 0.1
+TRAIN_STEPS = 2500
 
 
 
-# cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y),reduction_indices=[1]))
-# train_step = tf.train.GradientDescentOptimizer(0.2).minimize(cross_entropy)
-cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y, labels=y_))
 train_step = tf.train.AdamOptimizer(0.01).minimize(cross_entropy)
 sess = tf.InteractiveSession()
 tf.global_variables_initializer().run()
