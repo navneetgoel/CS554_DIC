@@ -6,12 +6,6 @@ mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 #getting the start time of the program.
 startTime = datetime.datetime.now()
 
-#Declaring the log path for tensorboard representation.
-#
-#logs_path = "/home/chitrarth/DIC/Project"
-#
-
-
 ##
  # returns pixels values and labels of the training data
  # @param  size:  number of images
