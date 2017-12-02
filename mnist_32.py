@@ -6,6 +6,20 @@ mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 #getting the start time of the program.
 startTime = datetime.datetime.now()
 
+##
+ # returns pixels values and labels of the testing data
+ # @param  size:  number of images
+ # @return x_train : pixel values of images
+ # @return y_train : labels for corresponding images
+##
+
+def TEST_SIZE(size):
+	x_test = mnist.test.images[:size,:]
+	y_test = mnist.test.labels[:size,:]
+	return x_test, y_test
+
+
+
 #Placeholder defined to hold the pixel values of the 28*28 pixel images and output label values#
 x = tf.placeholder(tf.float32, [None, 784])
 y = tf.placeholder(tf.float32, [None, 10])
@@ -67,7 +81,7 @@ for i in range(TRAIN_STEPS):
   x_train, y_train = mnist.train.next_batch(BATCH_SIZE)
   sess.run(training, feed_dict={x: x_train, y: y_train})
   if i%1000 == 0:
-    values = sess.run(accuracy, feed_dict={x: mnist.test.images, y: mnist.test.labels})
+    values = sess.run(accuracy, feed_dict={x: x_test, y: y_test})
     print('Accuracy :: ',values)
     print('For :: ', i)
     print('Time elasped :: ', datetime.datetime.now())
