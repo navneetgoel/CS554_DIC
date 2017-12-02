@@ -65,28 +65,33 @@ prediction = tf.nn.softmax(tf.matmul(y2, W3) + b3)
 # Calculating cross entropy to find the accuracy of the model
 cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y))
 
+#
 # Variable are defined to initialize the model
+# Total Training images in dataset = 55000
+# Total Test images in dataset = 10000
+#
 x_train, y_train = TRAIN_SIZE(5500)
 x_test, y_test = TEST_SIZE(10000)
-LEARNING_RATE = 0.1
+LEARNING_RATE = 0.01
 TRAIN_STEPS = 2500
 
+# optimizing the values of weights and baises to reduce cost.
+training = tf.train.AdamOptimizer(LEARNING_RATE).minimize(cross_entropy)
 
-
-train_step = tf.train.AdamOptimizer(0.01).minimize(cross_entropy)
+# initializing the global variables
 sess = tf.InteractiveSession()
 tf.global_variables_initializer().run()
 
-correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
+correct_prediction = tf.equal(tf.argmax(prediction,1), tf.argmax(y,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, 'float'))
 
 for i in range(10000):
   batch_xs, batch_ys = mnist.train.next_batch(100)
-  sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
+  sess.run(training, feed_dict={x: batch_xs, y: batch_ys})
   if i%1000 == 0:
 #         correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
 #         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        values = sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels})
+        values = sess.run(accuracy, feed_dict={x: mnist.test.images, y: mnist.test.labels})
        	print('Accuracy :: ',values)
         print('For :: ', i)
         print('Time elasped :: ', datetime.datetime.now())
