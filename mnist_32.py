@@ -59,7 +59,7 @@ x_test, y_test = TEST_SIZE(10000)
 LEARNING_RATE = 0.01
 TRAIN_STEPS = 10000
 BATCH_SIZE = 100
-BATCH_DISPLAY = 1000
+BATCH_DISPLAY_SIZE = 1000
 
 # optimizing the values of weights and baises to reduce cost.
 training = tf.train.AdamOptimizer(LEARNING_RATE).minimize(cross_entropy)
@@ -79,7 +79,7 @@ for i in range(TRAIN_STEPS):
   x_train, y_train = mnist.train.next_batch(BATCH_SIZE)
   sess.run(training, feed_dict={x: x_train, y: y_train})
 
-  if i%BATCH_DISPLAY == 0:
+  if i%BATCH_DISPLAY_SIZE == 0:
     ACCURACY = sess.run(accuracy, feed_dict={x: x_test, y: y_test})
     LOSS = sess.run(cross_entropy, {x: x_train, y: y_train})
     print('Training Step:' + str(i) + '  Accuracy =  ' + str(ACCURACY) 
