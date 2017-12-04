@@ -57,9 +57,9 @@ cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pr
 #
 x_test, y_test = TEST_SIZE(10000)
 LEARNING_RATE = 0.01
-TRAIN_STEPS = 10000
+TRAIN_STEPS = 10001
 BATCH_SIZE = 100
-BATCH_DISPLAY_SIZE = 1000
+BATCH_DISPLAY_SIZE = 100
 
 # optimizing the values of weights and baises to reduce cost.
 training = tf.train.AdamOptimizer(LEARNING_RATE).minimize(cross_entropy)
